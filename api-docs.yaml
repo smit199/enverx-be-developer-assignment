@@ -1,0 +1,235 @@
+openapi: "3.0.2"
+info:
+  title: Blog API
+  version: "1.0"
+  description: This is documentaion for Blog API.
+servers:
+  - url: "http://localhost:3000/"
+
+tags:
+  - name: Posts
+    description: Posts related routes for getting avialable posts
+
+components:
+  responses:
+    Success:
+      description: success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiResponse"
+
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AppError"
+
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AppError"
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+
+    AppError:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+
+    Post: 
+      type: object
+      properties: 
+        title:
+          type: string
+        author: 
+          type: string
+        category: 
+          type: string
+        tags:
+          type: array
+        content:
+          type: string
+        cover_photo:
+          type: string
+          format: binary
+      required:
+        - title
+        - author
+        - category
+        - content
+
+  parameters:
+    id:
+      name: id
+      in: path
+      schema:
+        type: string
+      required: true
+
+    title:
+      name: title
+      in: query
+      schema:
+        type: string
+    author:
+      name: author
+      in: query
+      schema:
+        type: string
+    category:
+      name: category
+      in: query
+      schema:
+        type: string
+    tags:
+      name: tags
+      in: query
+      schema:
+        type: string
+
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+    fields:
+      name: fields
+      in: query
+      schema:
+        type: string
+    search:
+      name: search
+      in: query
+      schema:
+        type: string
+    page:
+      name: page
+      in: query
+      schema:
+        type: number
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: number
+    
+paths:
+  /Blog/posts:
+    get:
+      summary: Get all posts details
+      description: Get all posts details
+      operationId: getAllPosts
+      tags:
+        - "Posts"
+      parameters:
+        - $ref: "#/components/parameters/title"
+        - $ref: "#/components/parameters/author"
+        - $ref: "#/components/parameters/category"
+        - $ref: "#/components/parameters/tags"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/fields"
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+
+    post:
+      summary: Create new post
+      description: Create new post
+      operationId: createPost
+      tags:
+        - "Posts"
+      requestBody:
+        description: post data
+        required: true
+        content:
+          multipart/form-data:
+            schema: 
+              $ref: "#/components/schemas/Post"
+
+      responses:
+        "201":
+          description: post created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"  
+        "400":
+          $ref: "#/components/responses/BadRequest" 
+
+  /Blog/posts/{id}:
+    get:
+      summary: Get post by id
+      description: Get post by id
+      operationId: getPostById
+      tags:
+        - "Posts"
+      parameters:
+        - $ref: "#/components/parameters/id"
+
+      responses:
+        "200":
+          $ref: "#/components/responses/Success"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    
+    put:
+      summary: update post
+      description: update post
+      operationId: updatePost
+      tags:
+        - "Posts"
+      parameters:
+        - $ref: "#/components/parameters/id"
+
+      requestBody:
+        description: post's update data
+        required: true
+        content:
+          multipart/form-data:
+            schema: 
+              $ref: "#/components/schemas/Post"
+
+      responses:
+        "200":
+            $ref: "#/components/responses/Success"  
+        "404":
+          $ref: "#/components/responses/NotFound" 
+
+    delete:
+      summary: delete post
+      description: delete post
+      operationId: deletePost
+      tags:
+        - "Posts"
+      parameters:
+        - $ref: "#/components/parameters/id"
+
+      responses:
+        "204":
+          description: no content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
