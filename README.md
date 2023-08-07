@@ -15,14 +15,14 @@ Follow these steps to set up and run the API on your local machine:
 
 2. **Clone the Repository**:
    
-    clone repository using below command
+    Clone repository using below command
     ```bash
     git clone https://github.com/your-username/simple-blog-api.git
     ```
 
 3. **Change Branch**
     
-    checkout to development branch
+    Checkout to development branch
     ```bash
     git checkout development
     ```
@@ -40,7 +40,7 @@ Follow these steps to set up and run the API on your local machine:
     - PORT: Port in which to run application
     - DATABASE: MongoDB database connection url
 
-7. **Run Application**
+6. **Run Application**
 
     Run application using below command:
     ```bash
@@ -48,7 +48,7 @@ Follow these steps to set up and run the API on your local machine:
     ```
     The application will start running on configured PORT.
 
-8. **API Documentation**
+7. **API Documentation**
 
     To open the swagger API documentation change server url according to your configured port in api-docs.yaml file. Run API documentation using below url in your browser:
     ```bash
